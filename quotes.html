@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #quote-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: left;
+        }
+        #quote {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        #author {
+            font-size: 1rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project-Daily Random Quote Generator</h1>
+    <button onclick="fetchQuote()">Get Quote</button>
+    <div id="quote-box">
+        <div id="quote">Click the button to fetch a quote</div>
+        <div id="author"></div>
+    </div>
+
+    <script>
+        let quotes = [];
+
+        async function fetchQuotes() {
+            try {
+                const response = await fetch('https://jacintodesign.github.io/quotes-api/data/quotes.json');
+                quotes = await response.json();
+            } catch (error) {
+                document.getElementById('quote').textContent = "Failed to load quotes. Please try again.";
+                document.getElementById('author').textContent = "";
+            }
+        }
+
+        function fetchQuote() {
+            if (quotes.length > 0) {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                const selectedQuote = quotes[randomIndex];
+                document.getElementById('quote').textContent = `"${selectedQuote.text}"`;
+                document.getElementById('author').textContent = selectedQuote.author ? `- ${selectedQuote.author}` : "- Unknown";
+            } else {
+                document.getElementById('quote').textContent = "Quotes are still loading";
+                document.getElementById('author').textContent = "";
+            }
+        }
+
+       
+        fetchQuotes();
+    </script>
+</body>
+</html>
